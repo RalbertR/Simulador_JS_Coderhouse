@@ -71,5 +71,5 @@ function filtrarPorMarca(marca){
 
 // TESTING
 cargarVehiculosEjemplo();
-filtrarPorMarca("Ford");
+console.log(filtrarPorMarca("Ford"));
 console.log(vehiculos[2].calcular5ProximosService());
