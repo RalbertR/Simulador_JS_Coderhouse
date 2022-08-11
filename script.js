@@ -1,5 +1,5 @@
 class Vehiculo{
-    constructor (id, marca, modelo, dominio, clase, anoFabricacion, kilometraje, fechaKilometraje, kmService, enServicio, frecuenciaDeServicio){
+    constructor (id, marca, modelo, dominio, clase, anoFabricacion, kilometraje, fechaKilometraje, kmService, fechaService, enServicio, frecuenciaDeServicio){
         this.id = id;
         this.marca = marca;
         this.modelo = modelo.toUpperCase();
@@ -9,6 +9,7 @@ class Vehiculo{
         this.kilometraje = kilometraje;
         this.fechaKilometraje = fechaKilometraje;
         this.kmService = kmService;
+        this.fechaUltimoService = fechaService;
         this.enServicio = enServicio;
         this.frecuenciaDeServicio = frecuenciaDeServicio;
         this.servicesRealizados = [];
@@ -43,16 +44,16 @@ class Vehiculo{
 let vehiculos = [];
 
 function cargarVehiculosEjemplo(){
-    vehiculos.push(new Vehiculo(1,"Mercedes-Benz", "Sprinter", "OQF097", "Furgon", 2012, 142922, new Date(2022, 0, 1), 141000, true, 10000));
-    vehiculos.push(new Vehiculo(2,"Mercedes-Benz", "Sprinter", "OUQ187","Furgon", 2012, 32988, new Date(2022, 0, 1), 30000, true, 10000));
-    vehiculos.push(new Vehiculo(3,"Ford", "Focus", "OKZ812","Sedan", 2013, 56998, new Date(2022, 0, 1), 51922, true, 10000));
-    vehiculos.push(new Vehiculo(4,"Volkswagen", "Amarok", "OJW510", "Camioneta", 2011, 209231, new Date(2022, 0, 1), 200198, true, 10000));
-    vehiculos.push(new Vehiculo(5,"Volkswagen", "Amarok", "OJW507", "Camioneta", 2011, 300721, new Date(2022, 0, 1), 288236, true, 10000));
-    vehiculos.push(new Vehiculo(6,"Iveco", "Tector", "OLR178", "Camion", 2012, 54332, new Date(2022, 0, 1), 53876, true, 15000));
-    vehiculos.push(new Vehiculo(7,"Citroën", "Berlingo", "AD356II", "Furgon", 2018, 125567, new Date(2022, 0, 1), 109822, true, 10000));
-    vehiculos.push(new Vehiculo(8,"Toyota", "Land Cruiser", "CNR232", "Camioneta", 1998, 489882, new Date(2022, 0, 1), 487233, true, 10000));
-    vehiculos.push(new Vehiculo(9,"Ford", "Ranger", "AE680HU", "Camioneta", 2020, 40977, new Date(2022, 0, 1), 39890, true, 10000));
-    vehiculos.push(new Vehiculo(10,"Yamaha", "XTZ 250", "427IOV", "Motocicleta", 2015, 7955, new Date(2022, 0, 1), 5923, true, 5000));
+    vehiculos.push(new Vehiculo(1,"Mercedes-Benz", "Sprinter", "OQF097", "Furgon", 2012, 142922, new Date(2022, 0, 1), 141000, new Date(2022, 0, 1), true, 10000));
+    vehiculos.push(new Vehiculo(2,"Mercedes-Benz", "Sprinter", "OUQ187","Furgon", 2012, 32988, new Date(2022, 0, 1), 30000, new Date(2022, 0, 1), true, 10000));
+    vehiculos.push(new Vehiculo(3,"Ford", "Focus", "OKZ812","Sedan", 2013, 56998, new Date(2022, 0, 1), 51922, new Date(2022, 0, 1), true, 10000));
+    vehiculos.push(new Vehiculo(4,"Volkswagen", "Amarok", "OJW510", "Camioneta", 2011, 209231, new Date(2022, 0, 1), 200198, new Date(2022, 0, 1), true, 10000));
+    vehiculos.push(new Vehiculo(5,"Volkswagen", "Amarok", "OJW507", "Camioneta", 2011, 300721, new Date(2022, 0, 1), 288236, new Date(2022, 0, 1), true, 10000));
+    vehiculos.push(new Vehiculo(6,"Iveco", "Tector", "OLR178", "Camion", 2012, 54332, new Date(2022, 0, 1), 53876, new Date(2022, 0, 1), true, 15000));
+    vehiculos.push(new Vehiculo(7,"Citroën", "Berlingo", "AD356II", "Furgon", 2018, 125567, new Date(2022, 0, 1), 109822, new Date(2022, 0, 1), true, 10000));
+    vehiculos.push(new Vehiculo(8,"Toyota", "Land Cruiser", "CNR232", "Camioneta", 1998, 489882, new Date(2022, 0, 1), 487233, new Date(2022, 0, 1), true, 10000));
+    vehiculos.push(new Vehiculo(9,"Ford", "Ranger", "AE680HU", "Camioneta", 2020, 40977, new Date(2022, 0, 1), 39890, new Date(2022, 0, 1), true, 10000));
+    vehiculos.push(new Vehiculo(10,"Yamaha", "XTZ 250", "427IOV", "Motocicleta", 2015, 7955, new Date(2022, 0, 1), 5923, new Date(2022, 0, 1), true, 5000));
 }
 
 function filtrarPorMarca(marcaBuscada){
@@ -96,10 +97,28 @@ function actualizarKilometraje(dominio, nuevoKilometraje){
     }
 }
 
+function actualizarService(dominio, nuevoService){
+    let movilBuscado = vehiculos.find((i) => i.dominio === dominio.toUpperCase());
+    if(movilBuscado != undefined){
+        let movilEncontrado = vehiculos[vehiculos.indexOf(movilBuscado)];
+        if(nuevoService > movilEncontrado.kmService){
+            movilEncontrado.kmService = nuevoService;
+            movilEncontrado.fechaService = new Date();
+            console.log(`Kilometraje del movil dominio ${dominio} actualizado correctamente a ${nuevoService}.`)
+            console.log(`Fecha de actualizacion de kilometraje ${movilEncontrado.fechaService.toLocaleString()}`);
+        }else{
+            console.log(`Verificar kilometraje ingresado, kilometraje menor al actual`);
+        }
+        
+    }else{
+        console.log(`Movil no encontrado con dominio ${dominio}`);
+    }
+}
+
 // TESTING
 cargarVehiculosEjemplo();
 
 filtrarPorMarca(prompt(`Ingrese Marca a filtrar`));
 
 actualizarKilometraje(prompt(`Ingresar Dominio para Actualizar Kilometraje`), prompt("Ingrese Kilometraje actual"));
-
+actualizarService(prompt(`Ingresar Dominio para Actualizar Kilometraje de Service`), prompt("Ingrese Kilometraje de Service Realizado"));
