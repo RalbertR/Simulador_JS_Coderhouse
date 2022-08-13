@@ -46,7 +46,7 @@ let vehiculos = [];
 function cargarVehiculosEjemplo(){
     vehiculos.push(new Vehiculo(1,"Mercedes-Benz", "Sprinter", "OQF097", "Furgon", 2012, 142922, new Date(2022, 0, 1), 141000, new Date(2022, 0, 1), true, 10000));
     vehiculos.push(new Vehiculo(2,"Mercedes-Benz", "Sprinter", "OUQ187","Furgon", 2012, 32988, new Date(2022, 0, 1), 30000, new Date(2022, 0, 1), true, 10000));
-    vehiculos.push(new Vehiculo(3,"Ford", "Focus", "OKZ812","Sedan", 2013, 56998, new Date(2022, 0, 1), 51922, new Date(2022, 0, 1), true, 10000));
+    vehiculos.push(new Vehiculo(3,"Ford", "Focus", "OKZ812","Sedan"2, 2013, 56998, new Date(2022, 0, 1), 51922, new Date(2022, 0, 1), true, 10000));
     vehiculos.push(new Vehiculo(4,"Volkswagen", "Amarok", "OJW510", "Camioneta", 2011, 209231, new Date(2022, 0, 1), 200198, new Date(2022, 0, 1), true, 10000));
     vehiculos.push(new Vehiculo(5,"Volkswagen", "Amarok", "OJW507", "Camioneta", 2011, 300721, new Date(2022, 0, 1), 288236, new Date(2022, 0, 1), true, 10000));
     vehiculos.push(new Vehiculo(6,"Iveco", "Tector", "OLR178", "Camion", 2012, 54332, new Date(2022, 0, 1), 53876, new Date(2022, 0, 1), true, 15000));
