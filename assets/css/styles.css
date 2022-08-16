@@ -1,0 +1,16 @@
+html,
+body {
+  height: 100%;
+}
+
+.colorServiceRojo{
+  color: red;
+}
+
+colorServiceVerde{
+  color: green;
+}
+
+.colorServiceAmarillo{
+  color: 	#FFBF00;
+}
