@@ -94,14 +94,14 @@ function actualizarKilometraje(dominio, nuevoKilometraje){
         if(nuevoKilometraje > movilEncontrado.kilometraje){
             movilEncontrado.kilometraje = nuevoKilometraje;
             movilEncontrado.fechaKilometraje = new Date();
-            console.log(`Kilometraje del movil dominio ${dominio} actualizado correctamente a ${nuevoKilometraje}.`)
+            alert(`Kilometraje del movil dominio ${dominio} actualizado correctamente a ${nuevoKilometraje}.`)
             console.log(`Fecha de actualizacion de kilometraje ${movilEncontrado.fechaKilometraje.toLocaleString()}`);
         }else{
-            console.log(`Verificar kilometraje ingresado, kilometraje menor al actual`);
+            alert(`Verificar kilometraje ingresado, kilometraje menor al actual`);
         }
         
     }else{
-        console.log(`Movil no encontrado con dominio ${dominio}`);
+        alert(`Movil no encontrado con dominio ${dominio}`);
     }
 }
 
@@ -122,6 +122,9 @@ function actualizarService(dominio, nuevoService){
         console.log(`Movil no encontrado con dominio ${dominio}`);
     }
 }
+
+let botonModKM = document.getElementById("botonModificarKm");
+botonModKM.onclick = () => actualizarKilometraje(prompt("Ingresar Dominio"),prompt("Ingresar Nuevo Kilometraje"));
 
 
 
