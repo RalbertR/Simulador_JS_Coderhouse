@@ -48,6 +48,10 @@ class Vehiculo{
 // CONSULTA LOCALSTORAGE
 let vehiculos = [];
 let listaVehiculosEnLocalStorage = JSON.parse(localStorage.getItem(`vehiculosAlmacenados`));
+
+
+
+
 if (listaVehiculosEnLocalStorage != null){
     for (const auto of listaVehiculosEnLocalStorage){
         vehiculos.push(Object.assign({}, auto));
@@ -96,11 +100,7 @@ function borrarPlanilla(){
 function filtrarPorMarca(marcaBuscada){
     
     arrayFiltradoMarca = vehiculos.filter((i) => i.marca.includes(marcaBuscada));
-    if (arrayFiltradoMarca.length === 0){
-            alert("No existen coincidencias con su busqueda.");
-        }else{
-            return arrayFiltradoMarca;
-        }
+    arrayFiltradoMarca.length === 0 ? alert("No existen coincidencias con su busqueda.") : arrayFiltradoMarca;
 }
 
 function actualizarKilometraje(dominio, nuevoKilometraje){
@@ -108,6 +108,7 @@ function actualizarKilometraje(dominio, nuevoKilometraje){
     if(movilBuscado != undefined){
         let movilEncontrado = vehiculos[vehiculos.indexOf(movilBuscado)];
         if(nuevoKilometraje > movilEncontrado.kilometraje){
+
             movilEncontrado.kilometraje = nuevoKilometraje;
             movilEncontrado.fechaKilometraje = new Date();
             vehiculos[vehiculos.indexOf(movilBuscado)].kilometraje = nuevoKilometraje;
