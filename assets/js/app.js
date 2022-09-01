@@ -56,7 +56,10 @@ if (listaVehiculosEnLocalStorage != null){
     for (const auto of listaVehiculosEnLocalStorage){
         vehiculos.push(Object.assign({}, auto));
     }
-    alert("Vehiculos encontrados en Base de datos, se procede a cargar ultimos vehiculos guardados. -");
+    Swal.fire({
+        icon: 'info',
+        text: 'Vehiculos encontrados en Base de datos, se carga planilla diaria.',
+      });
     renderPlanilla(vehiculos);
 }else{
     vehiculos.push(new Vehiculo(1,"Mercedes-Benz", "Sprinter", "OQF097", "Furgon", 2012, 142922, new Date(2022, 0, 1), 141000, new Date(2022, 0, 1), true, 10000));
@@ -71,7 +74,10 @@ if (listaVehiculosEnLocalStorage != null){
     vehiculos.push(new Vehiculo(10,"Yamaha", "XTZ 250", "427IOV", "Motocicleta", 2015, 7955, new Date(2022, 0, 1), 5923, new Date(2022, 0, 1), true, 5000));
     vehiculos.push(new Vehiculo(11,"Renault", "Clio", "PNV950", "Sedan", 2015, 59400, new Date(2022, 0, 1), 54800, new Date(2022, 0, 1), true, 10000));
 
-    alert("Vehiculos no encontrados en Base de datos, se procede a cargar vehiculos por defecto.-");
+    Swal.fire({
+        icon: 'warning',
+        text: 'Vehiculos no encontrados en Base de datos, se carga planilla con vehiculos por defecto.',
+      });
     renderPlanilla(vehiculos);
 }
 
@@ -116,7 +122,10 @@ function actualizarKilometraje(dominio, nuevoKilometraje){
             borrarPlanilla();
             renderPlanilla(vehiculos);
 
-            alert(`Kilometraje del movil dominio ${dominio} actualizado correctamente a ${nuevoKilometraje}.`)
+            Swal.fire({
+                icon: 'info',
+                text: `Kilometraje del movil dominio ${dominio} actualizado correctamente a ${nuevoKilometraje}.`,
+              });
             console.log(`Fecha de actualizacion de kilometraje ${movilEncontrado.fechaKilometraje.toLocaleString()}`);
 
         }else{
