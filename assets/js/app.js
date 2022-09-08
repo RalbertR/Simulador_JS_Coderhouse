@@ -49,9 +49,6 @@ class Vehiculo{
 let vehiculos = [];
 let listaVehiculosEnLocalStorage = JSON.parse(localStorage.getItem(`vehiculosAlmacenados`));
 
-
-
-
 if (listaVehiculosEnLocalStorage != null){
     for (const auto of listaVehiculosEnLocalStorage){
         vehiculos.push(Object.assign({}, auto));
@@ -62,25 +59,24 @@ if (listaVehiculosEnLocalStorage != null){
       });
     renderPlanilla(vehiculos);
 }else{
-    vehiculos.push(new Vehiculo(1,"Mercedes-Benz", "Sprinter", "OQF097", "Furgon", 2012, 142922, new Date(2022, 0, 1), 141000, new Date(2022, 0, 1), true, 10000));
-    vehiculos.push(new Vehiculo(2,"Mercedes-Benz", "Sprinter", "OUQ187","Furgon", 2012, 32988, new Date(2022, 0, 1), 30000, new Date(2022, 0, 1), true, 10000));
-    vehiculos.push(new Vehiculo(3,"Ford", "Focus", "OKZ812","Sedan", 2013, 56998, new Date(2022, 0, 1), 51922, new Date(2022, 0, 1), true, 10000));
-    vehiculos.push(new Vehiculo(4,"Volkswagen", "Amarok", "OJW510", "Camioneta", 2011, 209231, new Date(2022, 0, 1), 200198, new Date(2022, 0, 1), true, 10000));
-    vehiculos.push(new Vehiculo(5,"Volkswagen", "Amarok", "OJW507", "Camioneta", 2011, 300721, new Date(2022, 0, 1), 288236, new Date(2022, 0, 1), true, 10000));
-    vehiculos.push(new Vehiculo(6,"Iveco", "Tector", "OLR178", "Camion", 2012, 54332, new Date(2022, 0, 1), 53876, new Date(2022, 0, 1), true, 15000));
-    vehiculos.push(new Vehiculo(7,"Citroën", "Berlingo", "AD356II", "Furgon", 2018, 125567, new Date(2022, 0, 1), 109822, new Date(2022, 0, 1), true, 10000));
-    vehiculos.push(new Vehiculo(8,"Toyota", "Land Cruiser", "CNR232", "Camioneta", 1998, 489882, new Date(2022, 0, 1), 487233, new Date(2022, 0, 1), true, 10000));
-    vehiculos.push(new Vehiculo(9,"Ford", "Ranger", "AE680HU", "Camioneta", 2020, 40977, new Date(2022, 0, 1), 39890, new Date(2022, 0, 1), true, 10000));
-    vehiculos.push(new Vehiculo(10,"Yamaha", "XTZ 250", "427IOV", "Motocicleta", 2015, 7955, new Date(2022, 0, 1), 5923, new Date(2022, 0, 1), true, 5000));
-    vehiculos.push(new Vehiculo(11,"Renault", "Clio", "PNV950", "Sedan", 2015, 59400, new Date(2022, 0, 1), 54800, new Date(2022, 0, 1), true, 10000));
-
+    fetchVehiculos();
     Swal.fire({
         icon: 'warning',
         text: 'Vehiculos no encontrados en Base de datos, se carga planilla con vehiculos por defecto.',
-      });
-    renderPlanilla(vehiculos);
+      }); 
 }
+async function fetchVehiculos() {
+    const resp = await fetch("../vehiculos.json");
+    const data = await resp.json();
+    console.log(data);
 
+    for (const auto of data){
+        console.log(auto)
+        vehiculos.push(Object.assign({}, auto));
+    }
+    renderPlanilla(vehiculos);
+
+}
 
 function renderPlanilla(vehiculosACargar){
     let planilla = document.getElementById("cuerpoPlanillaAutomotores");

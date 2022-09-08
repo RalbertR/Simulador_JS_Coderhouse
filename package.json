@@ -1,0 +1,19 @@
+{
+  "name": "simulador-logistico",
+  "version": "1.0.0",
+  "description": "Simulador Logistico",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RalbertR/Simulador_JS_Coderhouse.git"
+  },
+  "author": "Raul Robino",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RalbertR/Simulador_JS_Coderhouse/issues"
+  },
+  "homepage": "https://github.com/RalbertR/Simulador_JS_Coderhouse#readme"
+}
