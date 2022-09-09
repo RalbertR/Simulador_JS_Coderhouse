@@ -66,7 +66,7 @@ if (listaVehiculosEnLocalStorage != null){
       }); 
 }
 async function fetchVehiculos() {
-    const resp = await fetch("../vehiculos.json");
+    const resp = await fetch("/vehiculos.json");
     const data = await resp.json();
     console.log(data);
 
