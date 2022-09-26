@@ -14,7 +14,9 @@ class Vehiculo{
         this.enServicio = enServicio;
         this.frecuenciaDeServicio = frecuenciaDeServicio;
         this.servicesRealizados = [];
+
     }
+
 
     calcularEstadoService(){
         if(this.kilometraje > this.kmService){
@@ -22,13 +24,13 @@ class Vehiculo{
         
             if (diferenciaKilometraje < (this.frecuenciaDeServicio - 1000)){
                 // console.log("Aun no es necesario realizar service de mantenimiento preventivo.");
-                return -1;
+                estadoService = "green";
             }else if(diferenciaKilometraje <= this.frecuencia && diferenciaKilometraje >= (this.frecuencia - 1000)){
                 // console.log("Atento. Service de mantenimiento preventivo proximo a realizarse!")
-                return 0;
+                estadoService = "yellow";
             }else if(diferenciaKilometraje >= this.frecuenciaDeServicio){
                 // console.log("Service de mantenimiento sobrepasado de kilometros, realizar urgente Service.")
-                return 1;
+                estadoService = "red";
             }
    
         }else{ console.log("Error en carga de kilometraje de Service. Verificar.")}  
@@ -82,13 +84,14 @@ function renderPlanilla(vehiculosACargar){
     let planilla = document.getElementById("cuerpoPlanillaAutomotores");
     for (const vehiculo of vehiculosACargar){
         let row = document.createElement("tr");
+        console.log(vehiculo.constructor.name)
         row.className = "filaVehiculo";
         row.innerHTML = `<td class="identificadorPlanilla">${vehiculo.id}</td>
                         <td class="marcaPlanilla">${vehiculo.marca}</td>
                         <td class="modeloPlanilla">${vehiculo.modelo}</td>
                         <td class="dominioPlanilla">${vehiculo.dominio}</td>
                         <td class="kmPlanilla">${numeroConPuntos(vehiculo.kilometraje)}</td>
-                        <td class="kmServicePlanilla">${numeroConPuntos(vehiculo.kmService)}</td>`;
+                        <td class="kmServicePlanilla"><button class="btn" type="button" style="color:${vehiculo.estadoService}">${numeroConPuntos(vehiculo.kmService)}</button></td>`
         planilla.appendChild(row);
     }
     guardarEnLS(vehiculosACargar);
@@ -106,6 +109,7 @@ function filtrarPorMarca(marcaBuscada){
 }
 
 function actualizarKilometraje(dominio, nuevoKilometraje){
+
     let movilBuscado = vehiculos.find((i) => i.dominio === dominio.toUpperCase());
     if(movilBuscado != undefined){
         let movilEncontrado = vehiculos[vehiculos.indexOf(movilBuscado)];
@@ -119,17 +123,23 @@ function actualizarKilometraje(dominio, nuevoKilometraje){
             renderPlanilla(vehiculos);
 
             Swal.fire({
-                icon: 'info',
+                icon: 'success',
                 text: `Kilometraje del movil dominio ${dominio} actualizado correctamente a ${nuevoKilometraje}.`,
               });
             console.log(`Fecha de actualizacion de kilometraje ${movilEncontrado.fechaKilometraje.toLocaleString()}`);
 
         }else{
-            alert(`Verificar kilometraje ingresado, kilometraje menor al actual`);
+            Swal.fire({
+                icon: 'warning',
+                text: `Kilometraje del movil dominio ${dominio} menor al actual. Verificar.`,
+              })
         }
         
     }else{
-        alert(`Movil no encontrado con dominio ${dominio}`);
+        Swal.fire({
+            icon: 'error',
+            text: `Dominio ${dominio} no encontrado en base de datos. Verificar.`,
+          })
     }
     
 }
@@ -146,15 +156,24 @@ function actualizarService(dominio, nuevoService){
             borrarPlanilla();
             renderPlanilla(vehiculos);
 
-            console.log(`Service del movil dominio ${dominio} actualizado correctamente a ${nuevoService}.`)
+            Swal.fire({
+                icon: 'success',
+                text: `Service del movil dominio ${dominio} actualizado correctamente a ${nuevoService}.`
+            })
             console.log(`Fecha de actualizacion de service ${movilEncontrado.fechaService.toLocaleString()}`);
 
         }else{
-            console.log(`Verificar kilometraje de service ingresado, kilometraje menor al actual`);
+                Swal.fire({
+                    icon: 'warning',
+                    text: `Kilometraje de Service del movil dominio ${dominio} menor al actual. Verificar.`,
+                  })
         }
         
     }else{
-        console.log(`Movil no encontrado con dominio ${dominio}`);
+        Swal.fire({
+            icon: 'error',
+            text: `Dominio ${dominio} no encontrado en base de datos. Verificar.`,
+          })
     }
 }
 
@@ -180,38 +199,174 @@ function guardarEnLS(arrayDeVehiculos){
     localStorage.setItem("vehiculosAlmacenados", JSON.stringify(vehiculos));
 }
 
+
 //BOTONES 
 
 let botonModKM = document.getElementById("botonModificarKm");
-botonModKM.onclick = () => actualizarKilometraje(prompt("Ingresar Dominio"),prompt("Ingresar Nuevo Kilometraje"));
-
+botonModKM.onclick = async () => {
+    const { value: dominioActualizar } = await Swal.fire({
+        title: 'Ingrese Dominio',
+        input: 'text',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Debe ingresar un dominio'
+          }
+        }
+    })
+    const { value: kilometrajeActualizar } = await Swal.fire({
+                title: 'Ingrese Kilometraje',
+                input: 'text',
+                showCancelButton: true,
+                inputValidator: (value) => {
+                  if (!value) {
+                    return 'Debe ingresar un kilometraje'
+                  }
+          }
+        }
+      )
+    actualizarKilometraje(dominioActualizar,kilometrajeActualizar)
+}
 let botonServiceKM = document.getElementById("botonService");
-botonServiceKM.onclick = () => actualizarService(prompt("Ingresar Dominio"),prompt("Ingresar Nuevo Service"));
-
+botonServiceKM.onclick = async () => {
+    const { value: dominioActualizar } = await Swal.fire({
+        title: 'Ingrese Dominio',
+        input: 'text',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Debe ingresar un dominio'
+          }
+        }
+    })
+    const { value: servciceActualizar } = await Swal.fire({
+                title: 'Ingrese Kilometraje de Service',
+                input: 'text',
+                showCancelButton: true,
+                inputValidator: (value) => {
+                  if (!value) {
+                    return 'Debe ingresar un kilometraje'
+                  }
+          }
+        }
+      )
+      
+      actualizarService(dominioActualizar,servciceActualizar)
+    }
 
 let botonAgregarVehiculo = document.getElementById("botonAgregarVehiculo");
-botonAgregarVehiculo.onclick = () => {
-    let marca = prompt("Ingrese Marca de Vehiculo");
-    let modelo = prompt("Ingrese Modelo de Vehiculo");
-    let dominio = prompt("Ingrese Dominio de Vehiculo");
-    let clase = prompt("Ingrese Clase de Vehiculo");
-    let anoFab = prompt("Ingrese Año de Fabricación de Vehiculo");
-    let km = prompt("Ingrese Kilometraje Actual de Vehiculo");
-    let kmService = prompt("Ingrese Kilometraje de Ultimo service realizado de Vehiculo");
-    let enServ = prompt("Vehiculo en servicio? True / False");
-    let frecuencia = prompt("Ingrese Frecuencia de Service de Vehiculo");
+botonAgregarVehiculo.onclick = async () => {
+
+    const { value: marca } = await Swal.fire({
+        title: 'Ingrese Marca',
+        input: 'text',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Debe ingresar un Marca'
+          }
+        } 
+    })
+    const { value: modelo } = await Swal.fire({
+        title: 'Ingrese Modelo',
+        input: 'text',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Debe ingresar un Modelo'
+          }
+        } 
+    })
+    const { value: dominio } = await Swal.fire({
+        title: 'Ingrese Dominio',
+        input: 'text',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Debe ingresar un Dominio'
+          }
+        } 
+    })
+    const { value: clase } = await Swal.fire({
+        title: 'Ingrese Clase de Vehiculo',
+        input: 'text',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Debe ingresar un Clase'
+          }
+        } 
+    })
+    const { value: anoFab } = await Swal.fire({
+        title: 'Ingrese Año de Fabricacion',
+        input: 'text',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Debe ingresar un Año de Fabricacion'
+          }
+        } 
+    })
+    const { value: km } = await Swal.fire({
+        title: 'Ingrese Kilometraje actual',
+        input: 'text',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Debe ingresar un Kilometraje'
+          }
+        } 
+    })
+    const { value: kmService } = await Swal.fire({
+        title: 'Ingrese Kiloemtraje de ultimo service realizado del vehiculo.',
+        input: 'text',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Debe ingresar un Kilometraje'
+          }
+        } 
+    })
+    const { value: enServ } = await Swal.fire({
+        title: 'Ingrese en Servicio',
+        input: 'text',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Debe ingresar un estado de vehiculo'
+          }
+        } 
+    })
+    const { value: frecuencia } = await Swal.fire({
+        title: 'Ingrese Frecuencia de Service',
+        input: 'text',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Debe ingresar una frecuencia'
+          }
+        } 
+    })
+
     agregarVehiculo(marca, modelo, dominio, clase, anoFab, km, kmService, enServ, frecuencia)
 }
 
-let botonEliminarVehiculo = document.getElementById("botonEliminarVehiculo");
-botonEliminarVehiculo.onclick = () => {
-    borrarVehiculo(prompt("Ingrese Dominio a borrar: "));
-};
-// let prueba = document.getElementById("botonPrueba");
-// prueba.onclick = () => {
-//     localStorage.clear();
-// }
+let botonEliminarVehiculo = document.getElementById("botonEliminarFila")
+botonEliminarVehiculo.onclick = async () => {
+    const { value: patente } = await Swal.fire({
+        title: 'Ingrese Dominio a Borrar',
+        input: 'text',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Debe ingresar una Dominio'
+          }
+        } 
+    })
+    borrarVehiculo(patente)
+}
 
+/* Agrega numeros en lista con puntos en centena de mil */
 function numeroConPuntos(x) {
     return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
 }

@@ -163,5 +163,21 @@
         "enServicio": true,
         "frecuenciaDeServicio": 10000,
         "servicesRealizados": []
+    },
+    {
+        "id": 12,
+        "marca": "Audi",
+        "modelo": "A3",
+        "dominio": "DSB800",
+        "clase": "HATCHBACK",
+        "anoFabricacion": 2001,
+        "kilometraje": 259875,
+        "fechaKilometraje": "2022-01-01T03:00:00.000Z",
+        "kmService": 54800,
+        "fechaUltimoService": "2022-01-01T03:00:00.000Z",
+        "enServicio": true,
+        "frecuenciaDeServicio": 10000,
+        "servicesRealizados": []
     }
+    
 ]
